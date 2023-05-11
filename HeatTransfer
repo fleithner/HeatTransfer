@@ -1,0 +1,30 @@
+import math
+#A ... elongation of the cell
+#a ... extinction coefficient foam
+#b ... relative density foam
+#c ... height of the cell
+#d ... diameter of the cell
+#e ... conductivity concrete
+
+def coefficient(Gr , A, a, b, c, d):
+
+    Y = (16*1.38e-23 * 19.5**3/(3*a)) + ((A * e * b + (0.025 * (0.18 * math.pow(Gr, 0.25)/math.pow(c/d, 0.1)) * (1 - b))) + (1 - A) * (((4.5e-3 * math.pow(Gr, 0.25) / math.pow((c/d), 0.1)) * e) /
+                                         (b * 4.5e-3 * (math.pow(Gr, 0.25) / math.pow((c/d), 0.1)) + e * (1 - b))))
+    return Y
+
+A = 0.6
+b = 0.4
+c = 0.8
+d = 0.06
+e = 0.52
+
+#extinction coefficient is defined via relative density and cell diameter
+a = 3.68 * (math.sqrt(b)/d)
+#Gr number changes according to cell diameter (set to 1000 if diameter = 10mm)
+Gr = (d**3)/(0.01**3) * 1000
+Y = coefficient(Gr,A,a,b,c,d)
+U = round(1/ (0.17+(0.3/Y)),3)
+
+HT_coefficient = round(coefficient(Gr, A, a, b, c, d), 3)
+print(HT_coefficient)
+print(U)

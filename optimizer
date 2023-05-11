@@ -1,0 +1,35 @@
+import math
+from scipy.optimize import minimize
+from scipy.optimize import Bounds
+
+
+#function to minimize
+def heat_transfer(x):
+    Gr = 1000.00
+    A = 0.6
+    T = 19.5
+    b = 300
+
+    #x0 relative density
+    #x1 cell height
+    #x2 cell diameter
+
+    x0 = x[0]
+    x1 = x[1]
+
+
+    return 3.024e-7 * 3.68 * T ** 3 * x[0]/b + (A * (0.33 * x[0] + 0.0253/(x[1]/b)**0.11 * (1-x[0])) + (1-A) * (8.349e-3/(x[1]/b)**0.11)/(x0*0.0253/(x[1]/b)**0.11 + 0.33 * (1-x[0])))
+
+#boundaries
+bnds = Bounds ([0.2,300],[0.8,800])
+
+#starting point
+x_start = [0.6,600]
+
+#optimizing
+result = minimize(heat_transfer, x_start,
+               method='trust-constr', bounds=bnds,
+               options={'maxiter': 3000, 'disp': True})
+
+print(result.x)
+
